@@ -433,7 +433,8 @@ Javascript common function
 		return params[n] || d; 
 	}
 	
-	var getParamUrl = function(url, obj, addParams){
+	var getParamUrl = function(url, srcObj, addParams){
+		var obj = cloneObj(srcObj);
 		if(obj && addParams){
 			obj = Object.assign(getParams(), obj);
 		}
@@ -587,7 +588,7 @@ Javascript common function
 	fn("setCookie", setCookie, 'setCookie(String n, Obj v, int s?) (鍵，值，過期秒數) => 設定Cookie為JSON字串,默認1年過期,0代表關閉瀏覽器即過期 ');
 	fn("delCookie", delCookie, 'delCookie(String n) (鍵) => 刪除Cookie');
 	fn("getParam", getParam, 'getParam(String n, Obj d?) (鍵，默認值) => 獲取url參數');
-	fn("getParams", getParam, 'getParams() () => 獲取url params對象');
+	fn("getParams", getParams, 'getParams() () => 獲取url params對象');
 	fn("getParamUrl", getParamUrl, 'getParamUrl(Obj obj, Boolean addParams) => 獲取url params帶?');
 	fn("cloneObj", cloneObj, 'cloneObj(Obj obj) => 克隆對像');
 	fn("getVar", getVar, 'getVar(String name) => 獲取變量');
