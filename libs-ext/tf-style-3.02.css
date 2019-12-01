@@ -315,7 +315,7 @@ Fresh sytle theme
 .tf-system-middle{ left: 50%; top: 35%; max-width: 264px; margin-left: -150px; }
 
 /* 讯息框 Ex: <div class="tf-msg tf-msg-small"><span class="tf-msg-top">Title<a class="tf-msg-close">X</a></span><span class="tf-msg-con tf-msg-black tf-msg-cover">Content<a class="tf-msg-close">X</a></span><span class="tf-msg-bottom"><a class="tf-btn tf-btn-blue1">确认</a><a class="tf-btn">取消</a></span></div> */
-.tf-msg{ z-index:20001; position: fixed; top: 180px; left:50%; box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3); -webkit-box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3); -ms-box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3); -moz-box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3); -o-box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3); }
+.tf-msg{ z-index:20001; position: fixed; top: 120px; left:50%; box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3); -webkit-box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3); -ms-box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3); -moz-box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3); -o-box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3); }
 .tf-msg-mini{ margin-left:-50px; width:100px; font-size:15px; line-height: 22px; }
 .tf-msg-mini .tf-msg-top{ width:60px; padding:6px 20px 6px 20px; }
 .tf-msg-mini .tf-msg-bottom{ width:88px; padding:6px 6px 15px 6px; }
@@ -343,6 +343,7 @@ Fresh sytle theme
 .tf-msg .tf-msg-low{ padding-top: 0px; padding-bottom: 0px;}
 .tf-msg .tf-msg-top{ z-index:20002; display: block; position:relative; background-color: #F8F8F8; color: #333; border-bottom: 1px solid #eee; }
 .tf-msg .tf-msg-con{ z-index:20002; display: block; position:relative; background-color: #FFF; color: #333; max-height: 550px; overflow-y: auto; }
+.tf-msg .tf-msg-con.tf-msg-con-fixed{ max-height: 220px !important;}
 .tf-msg .tf-msg-bottom{ z-index:20002; display: block; position:relative; text-align:center; background-color: #FFF; color: #333; }
 .tf-msg .tf-msg-circle{ border-radius: 5px; -webkit-border-radius: 5px; -ms-border-radius: 5px; -moz-border-radius: 5px; -o-border-radius: 5px; }
 .tf-msg .tf-msg-cover{ filter:alpha(opacity=82); opacity:0.82; -moz-opacity: 0.82; -o-opacity: 0.82; }
