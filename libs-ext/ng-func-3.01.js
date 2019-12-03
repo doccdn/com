@@ -57,37 +57,6 @@ getElems(String selector)
 			return true;
 		}
 		
-		
-		api.view = function(result, opt){
-			if(!opt.view || !result || !result.view){
-				return;
-			}
-			var view = result.view;
-			if(view.log){
-				fn.log(view.log);
-			}
-			if(view.db && typeof(db) == "object" && typeof(view.db) == "object"){
-				for(var key in view.db){
-					if(Array.isArray(view.db[key])){
-						db[key] = [].concat(view.db[key]);
-					}else if(typeof(view.db[key]) == "object"){
-						db[key] =  typeof(db[key]) !="object"? {}: db[key] ;
-						for(var childKey in view.db[key]){
-							db[key][childKey] = view.db[key][childKey];
-						}
-					}else{
-						db[key] = view.db[key];
-					}
-				}
-			}
-			if(view.dbPush){
-				for(var key in view.dbPush){
-					db[key] = typeof(db[key]) !="undefined" && Array.isArray(db[key])? db[key]: [];
-					db[key] = db[key].concat(view.dbPush[key]);
-				}
-			}
-		}
-		
 		api.get = function(url, params, opt){
 			return api.http({url: url, method: "GET", params: params}, opt); //application/x-www-form-urlencoded
 		}
