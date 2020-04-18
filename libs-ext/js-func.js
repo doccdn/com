@@ -6,21 +6,16 @@ Javascript common function
 */
 
 (function(w, n) {
-	w[n] = js = function(){
-		console.log("Js-common version1.0 is ready.");
-	}
+	w[n] = js = {};
 	
 	if(typeof Object.assign != 'function'){
 		Object.assign = function(target) {
 			'use strict';
-			/*if(target != null){
-				throw new TypeError('Cannot convert undefined or null to object');
-			}*/
 			target = Object(target);
-			for(var index = 1; index < arguments.length; index++){
-				var source = arguments[index];
+			for(js.index = 1; index < arguments.length; index++){
+				js.source = arguments[index];
 				if(source != null){
-					for(var key in source){
+					for(js.key in source){
 			          if(Object.prototype.hasOwnProperty.call(source, key)){
 			          	target[key] = source[key];
 			          }
@@ -33,30 +28,20 @@ Javascript common function
 	
 	if(!Object.keys){
 	  Object.keys = (function () {
-		var hasOwnProperty = Object.prototype.hasOwnProperty,
+		js.hasOwnProperty = Object.prototype.hasOwnProperty,
 			hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
-			dontEnums = [
-			  'toString',
-			  'toLocaleString',
-			  'valueOf',
-			  'hasOwnProperty',
-			  'isPrototypeOf',
-			  'propertyIsEnumerable',
-			  'constructor'
-			],
+			dontEnums = ['toString', 'toLocaleString', 'valueOf', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'constructor'],
 			dontEnumsLength = dontEnums.length;
 	
 		return function (obj) {
 		  if (typeof obj !== 'object' && typeof obj !== 'function' || obj === null) throw new TypeError('Object.keys called on non-object');
 	
-		  var result = [];
-	
-		  for (var prop in obj) {
+		  js.result = [];
+		  for (js.prop in obj) {
 			if (hasOwnProperty.call(obj, prop)) result.push(prop);
 		  }
-	
 		  if (hasDontEnumBug) {
-			for (var i=0; i < dontEnumsLength; i++) {
+			for (js.i=0; i < dontEnumsLength; i++) {
 			  if (hasOwnProperty.call(obj, dontEnums[i])) result.push(dontEnums[i]);
 			}
 		  }
@@ -66,7 +51,7 @@ Javascript common function
 	};
 	
 	String.prototype.hashCode = function() {
-		var hash = 0, i, chr;
+		js.hash = 0, i, chr;
 		if (this.length === 0) return hash;
 		for (i = 0; i < this.length; i++) {
 			chr   = this.charCodeAt(i);
@@ -76,42 +61,27 @@ Javascript common function
 		return hash;
 	};
 	
-	var j = {};
-	var h = {};
+	js.j = {};
 	
 	js.log =  function(m, o){
-		console.log(m, typeof(o) == "undefined"? "": o);
-	}
-	
-	js.help = function(){
-		js.log("Help:");
-		var keys = Object.keys(h);
-		for(var i = 0 ; i < keys.length ; i++){
-			js.log(n +"." + h[keys[i]]);
-		}
-		js.log(n +".browser", js.browser);
-	}
-	
-	var fn = function(n, f, r){
-		js[n] = f;
-		h[n] = r;
-		return js;
+		o = (typeof(o) == "undefined"? "": (Array.isArray(o)? o: [o]));
+		console.log(m, o);
 	}
 		
 	js.browser = function(){
-		var agent = navigator.userAgent;
-		var app = navigator.appVersion;  
-		return {   //移动终端浏览器版本信息  
-			trident: agent.indexOf('Trident') > -1 //IE内核  
-			, presto: agent.indexOf('Presto') > -1 //opera内核  
-			, webKit: agent.indexOf('AppleWebKit') > -1 //苹果、谷歌内核  
-			, gecko: agent.indexOf('Gecko') > -1 && agent.indexOf('KHTML') == -1 //火狐内核  
-			, mobile: !!agent.match(/AppleWebKit.*Mobile.*/) //是否为移动终端  
-			, ios: !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端  
-			, android: agent.indexOf('Android') > -1 || agent.indexOf('Linux') > -1 //android终端或uc浏览器  
-			, iPhone: agent.indexOf('iPhone') > -1 //是否为iPhone或者QQHD浏览器  
-			, iPad: agent.indexOf('iPad') > -1 //是否iPad  
-			, webApp: agent.indexOf('Safari') > -1 //是否web应该程序，没有头部与底部
+		js.agent = navigator.userAgent;
+		js.app = navigator.appVersion;  
+		return {
+			trident: agent.indexOf('Trident') > -1 //IE Core
+			, presto: agent.indexOf('Presto') > -1 //Opera Core 
+			, webKit: agent.indexOf('AppleWebKit') > -1 //Apple Core
+			, gecko: agent.indexOf('Gecko') > -1 && agent.indexOf('KHTML') == -1 //Firefox Core
+			, mobile: !!agent.match(/AppleWebKit.*Mobile.*/) //Moblie
+			, ios: !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //IOS
+			, android: agent.indexOf('Android') > -1 || agent.indexOf('Linux') > -1 //Android or UC
+			, iPhone: agent.indexOf('iPhone') > -1 //iPhone or QQ HD Browser
+			, iPad: agent.indexOf('iPad') > -1 //iPad  
+			, webApp: agent.indexOf('Safari') > -1 //Safari
 			, language: (navigator.browserLanguage || navigator.language).toLowerCase()  
 			, weixin: agent.indexOf('MicroMessenger') > -1 || typeof(navigator.wxuserAgent) !== "undefined" || typeof(WeixinJSBridge) !== "undefined"
 			, weibo: agent.indexOf('WeiBo') > -1
@@ -120,15 +90,15 @@ Javascript common function
 		};
 	}();
 	
-	var getBasePath = function(){
+	js.getBasePath = function(){
 		return window.location.protocol + "//" + window.location.host;
 	}
 	
-	var getMs = function(d){
+	js.getMs = function(d){
 		return (!d? new Date(): d).getTime();
 	}
 	
-	var getWindowHeight = function(){
+	js.getWindowHeight = function(){
 		if(document.compatMode == "CSS1Compat"){
 			return document.documentElement.clientHeight;
 		}else{
@@ -136,8 +106,8 @@ Javascript common function
 		}
 	}
 	
-	var getScrollTop = function(){
-		var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
+	js.getScrollTop = function(){
+		js.scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
 		if(!!document.body){
 			bodyScrollTop = document.body.scrollTop;
 		}
@@ -147,8 +117,8 @@ Javascript common function
 		return (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
 	}
 	
-	var getScrollHeight = function(){
-		var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
+	js.getScrollHeight = function(){
+		js.scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
 		if(!!document.body){
 			bodyScrollHeight = document.body.scrollHeight;
 		}
@@ -158,7 +128,7 @@ Javascript common function
 		return (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
 	}
 	
-	var isScrollBottom = function(){
+	js.isScrollBottom = function(){
 		if(getScrollTop() + getWindowHeight() + 60 >= getScrollHeight()){
 			return true;
 		}else{
@@ -166,15 +136,15 @@ Javascript common function
 		}
 	}
 	
-	var scrollReset = function(){
+	js.scrollReset = function(){
 		j.resetScroll = setInterval(function(){
-			var osTop = 0;
+			js.osTop = 0;
 			if(!!document.documentElement && !!document.documentElement.scrollTop){
 				osTop = document.documentElement.scrollTop;
 			}else if(!!document.body){
 				osTop = document.body.scrollTop;
 			}
-			var speed = Math.floor(-osTop / 6);
+			js.speed = Math.floor(-osTop / 6);
 			document.documentElement.scrollTop = document.body.scrollTop = osTop + speed;
 			if(osTop == 0){
 				clearInterval(j.resetScroll);
@@ -182,26 +152,26 @@ Javascript common function
 		}, 30);
 	}
 	
-	var getRnd = function(before, end){ 
+	js.getRnd = function(before, end){ 
 		return before + Math.floor(Math.random() * (end - before));   
 	}
 	
-	var getRndStr = function(len, mode){ //长度, 大写
-		var upperCase = ['3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','J','K','M','N','P','Q','R','S','W','X','Y'];
-		var lowerCase =  ['3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','j','k','m','n','p','q','r','s','w','x','y'];
-		var alls = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-		var des = ['+', '=', '/','+', '=', '/','+', '=', '/'];
-		var plan = [upperCase, lowerCase, upperCase.concat(lowerCase), alls, alls.concat(des)];
-		var chars = plan[mode || 0];
-		var res = "";
-		 for(var i = 0; i < len ; i ++) {
-			 var rnd = Math.ceil(Math.random()*(chars.length - 1));
+	js.getRndStr = function(len, mode){ //0=upperCase, 1=lowerCase, 3=both, 4=allWords, 5=allWordsAndSymbol
+		js.upperCase = ['3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','J','K','M','N','P','Q','R','S','W','X','Y'];
+		js.lowerCase =  ['3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','j','k','m','n','p','q','r','s','w','x','y'];
+		js.alls = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+		js.des = ['+', '=', '/','+', '=', '/','+', '=', '/'];
+		js.plan = [upperCase, lowerCase, upperCase.concat(lowerCase), alls, alls.concat(des)];
+		js.chars = plan[mode || 0];
+		js.res = "";
+		 for(js.i = 0; i < len ; i ++) {
+			 js.rnd = Math.ceil(Math.random()*(chars.length - 1));
 			 res += chars[rnd];
 		 }
 		 return res;
 	}
 	
-	var display = function(elemId) {
+	js.display = function(elemId) {
 		if (document.getElementById(elemId)){
 			if (document.getElementById(elemId).style.display == 'none') {
 				document.getElementById(elemId).style.display = '';
@@ -211,19 +181,19 @@ Javascript common function
 		}
 	}
 	
-	var hide = function(elemId) {
+	js.hide = function(elemId) {
 		if(document.getElementById(elemId)) document.getElementById(elemId).style.display = 'none';
 	}
 	
-	var show = function(elemId) {
+	js.show = function(elemId) {
 		if(document.getElementById(elemId)) document.getElementById(elemId).style.display = 'block';
 	}
 	
-	var fadeOut = function(elemId, speed, opacity) {
-		var elem = document.getElementById(elemId);
+	js.fadeOut = function(elemId, speed, opacity) {
+		js.elem = document.getElementById(elemId);
 		if(elem){
 			j.hide = j.hide || {};
-			var v = elem.style.filter.replace("alpha(opacity=", "").replace(")", "") || elem.style.opacity || 100;
+			js.v = elem.style.filter.replace("alpha(opacity=", "").replace(")", "") || elem.style.opacity || 100;
 			v < 1 && (v = v * 100);
 			if(v > (opacity || 0) && (!j.hide[elemId] || j.hide[elemId] == false)){
 				j.hide[elemId] = setInterval(function(){
@@ -240,11 +210,11 @@ Javascript common function
 		}
 	}
 	
-	var fadeIn = function(elemId, speed, opacity) {
-		var elem = document.getElementById(elemId);
+	js.fadeIn = function(elemId, speed, opacity) {
+		js.elem = document.getElementById(elemId);
 		if(elem){
 			j.hide = j.hide || {};
-			var v = elem.style.filter.replace("alpha(opacity=", "").replace(")", "") || elem.style.opacity || 100;
+			js.v = elem.style.filter.replace("alpha(opacity=", "").replace(")", "") || elem.style.opacity || 100;
 			v < 1 && (v = v * 100);
 			if(v < (opacity || 100) && (!j.hide[elemId] || j.hide[elemId] == false)){
 				j.hide[elemId] = setInterval(function(){
@@ -261,7 +231,7 @@ Javascript common function
 		}
 	}
 	
-	var getLen = function(obj){
+	js.getLen = function(obj){
 		if(!obj){
 			return 0;
 		}
@@ -274,14 +244,14 @@ Javascript common function
 		}
 	}
 	
-	var toArray = function(obj){
+	js.toArray = function(obj){
 		if(Array.isArray(obj)){
 			return obj;
 		}
 		 if(typeof(obj) == "object"){
-			var keys = Object.keys(obj);
-			var a = [];
-			for(var i = 0; i < keys.length; i++){
+			js.keys = Object.keys(obj);
+			js.a = [];
+			for(js.i = 0; i < keys.length; i++){
 				a.push(obj[keys[i]])
 			}
 			return a;
@@ -290,12 +260,12 @@ Javascript common function
 		return [obj];
 	}
 	
-	var isInArray = function(obj, value, checkKey){
+	js.isInArray = function(obj, value, checkKey){
 		if(!obj || !value){
 			return false;
 		}
 		if(Array.isArray(obj)){
-			for(var i = 0; i < obj.length; i++){
+			for(js.i = 0; i < obj.length; i++){
 				if(obj[i] == value){
 					return true;
 				}
@@ -304,8 +274,8 @@ Javascript common function
 				}
 			}
 		}else if(typeof(obj) == "object"){
-			var keys = Object.keys(obj);
-			for(var i = 0; i < keys.length; i++){
+			js.keys = Object.keys(obj);
+			for(js.i = 0; i < keys.length; i++){
 				if(obj[keys[i]] == value){
 					return true;
 				}
@@ -317,10 +287,10 @@ Javascript common function
 		return false;
 	}
 	
-	var isInArrayStr = function(str, value){
+	js.isInArrayStr = function(str, value){
 		if(!!str){
-			var array = str.split(",");
-			for(var i = 0; i < array.length; i++){
+			js.array = str.split(",");
+			for(js.i = 0; i < array.length; i++){
 				if(array[i] == value){
 					return true;
 				}
@@ -329,16 +299,16 @@ Javascript common function
 		return false;
 	}
 	
-	var getIndex = function(obj, value){
+	js.getIndex = function(obj, value){
 		if(Array.isArray(obj)){
-			for(var i = 0; i < obj.length; i++){
+			for(js.i = 0; i < obj.length; i++){
 				if(obj[i] == value){
 					return i;
 				}
 			}
 		}else if(typeof(obj) == "object"){
-			var keys = Object.keys(obj);
-			for(var i = 0; i < keys.length; i++){
+			js.keys = Object.keys(obj);
+			for(js.i = 0; i < keys.length; i++){
 				if(obj[keys[i]] == value){
 					return i;
 				}
@@ -347,35 +317,35 @@ Javascript common function
 		return -1;
 	}
 	
-	var getNumList = function(before, end){
+	js.getNumList = function(before, end){
 		before = Math.ceil(before);
 		end = Math.ceil(end);
-		var nums = [];
-		for(var i = before; i <= end;i++){
+		js.nums = [];
+		for(js.i = before; i <= end;i++){
 			nums[i] = i;
 		}
 		return nums;
 	}
 	
-	var regex = function(data, pattem, min, max){
+	js.regex = function(data, pattem, min, max){
 		if((!!min && data.length < min) || (!!max && data.length > max)){
 			return false;
 		}
-		var re = new RegExp(pattem);
+		js.re = new RegExp(pattem);
 		return re.test(data);
 	}
 	
-	var isEmpty = function(value){ 
+	js.empty = function(value){ 
 		return value && value != null && value >= 0 && value != "";	
 	}
 	
-	var getCookie = function(n, d, c){
-		var arr,reg=new RegExp("(^| )"+n+"=([^;]*)(;|$)");
+	js.getCookie = function(n, d, c){
+		js.arr,reg=new RegExp("(^| )"+n+"=([^;]*)(;|$)");
 		if(arr=document.cookie.match(reg)){
-			var r = unescape(arr[2]);
-			var e;
+			js.r = unescape(arr[2]);
+			js.e;
 			try{
-				var j = JSON.parse(r);
+				js.j = JSON.parse(r);
 				if(typeof j == 'object' && j){
 					return j;
 				}else{
@@ -392,8 +362,8 @@ Javascript common function
 		return null;
 	}
 	
-	var setCookie = function(n, v, s){
-		var expireDate = new Date();
+	js.setCookie = function(n, v, s){
+		js.expireDate = new Date();
 		v = typeof v == 'object'? JSON.stringify(v): v;
 		if(s == 0){
 			document.cookie=n + "=" +escape(v) + ";path=/";
@@ -404,46 +374,46 @@ Javascript common function
 		
 	}
 	
-	var delCookie = function(n){
-		var expireDate = new Date();
+	js.delCookie = function(n){
+		js.expireDate = new Date();
 		expireDate.setDate(expireDate.getDate() - 1);
-		var cval = this.getCookie(n, null);
+		js.cval = this.getCookie(n, null);
 		if(cval !=null){
 			document.cookie= n + "="+cval+";expires="+expireDate.toGMTString();
 		}
 	}
 	
-	var getParams = function(){
-		var url = window.location.toString();
-		var start = url.indexOf("?");
-		var params = {};
+	js.getParams = function(){
+		js.url = window.location.toString();
+		js.start = url.indexOf("?");
+		js.params = {};
 		url = url.substring(start);
 		if (url.indexOf("?") != -1) { 
-			var str = url.substr(1); 
+			js.str = url.substr(1); 
 			strs = str.split("&"); 
-			for(var i = 0; i < strs.length; i ++) {
+			for(js.i = 0; i < strs.length; i ++) {
 				params[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
 			} 
 		} 
 		return params; 
 	}
 	
-	var getParam = function(n, d){
-		var params = getParams();
+	js.getParam = function(n, d){
+		js.params = getParams();
 		return params[n] || d; 
 	}
 	
-	var getParamUrl = function(url, srcObj, addParams){
-		var obj = cloneObj(srcObj);
+	js.getParamUrl = function(url, srcObj, addParams){
+		js.obj = cloneObj(srcObj);
 		if(obj && addParams){
 			obj = Object.assign(getParams(), obj);
 		}
 		if(!obj || typeof(obj) != "object" || Array.isArray(obj)){
 			return url || "";
 		}
-		var param = [];
-		var objKeys = Object.keys(obj);
-		for(var i = 0; i < objKeys.length; i++){
+		js.param = [];
+		js.objKeys = Object.keys(obj);
+		for(js.i = 0; i < objKeys.length; i++){
 			if(obj[objKeys[i]] != "undefined" &&  typeof obj[objKeys[i]] != "null" && obj[objKeys[i]] != null){
 				param[i] = objKeys[i] + "=" + encodeURIComponent(obj[objKeys[i]]);
 			}
@@ -452,20 +422,20 @@ Javascript common function
 		return (url || "") + (param.length > 0? (!url || url.indexOf("?") == -1? "?": "&") + param.join("&"): "");
 	}
 
-	var cloneObj = function(obj) {
+	js.cloneObj = function(obj) {
 		if(!obj){
 			return obj;
 		}
 		if(Array.isArray(obj) && Object.keys(obj).length > 0){
-			var o = [];
-			for (var i = 0; i < obj.length; i++) {
+			js.o = [];
+			for (js.i = 0; i < obj.length; i++) {
 				o.push(cloneObj(obj[i]));
 			}
 			return o;
 		}
 		if(typeof obj == "object" && Object.keys(obj).length > 0){
-			var o = {};
-			for (var j in obj) {
+			js.o = {};
+			for (js.j in obj) {
 				o[j] = cloneObj(obj[j]);
 			}
 			return o;
@@ -473,7 +443,7 @@ Javascript common function
 		return obj;
 	}
 	
-	var merge = function (target, source)  {
+	js.merge = function (target, source)  {
 	    if (typeof target == "object" && typeof source == "object") {
 	        for (const key in source) {
 	            if (source[key] === null && (target[key] === undefined || target[key] === null)) {
@@ -492,23 +462,23 @@ Javascript common function
 	    return target;
 	}
 	
-	var getVar = function(name){
+	js.getjs.= function(name){
 		return eval(name);
 	}
 	
-	var getWeek = function(date){
-		var date2=new Date(date.getFullYear(), 0, 1);
-		var day1=date.getDay();
+	js.getWeek = function(date){
+		js.date2=new Date(date.getFullYear(), 0, 1);
+		js.day1=date.getDay();
 		if(day1==0) day1=7;
-		var day2=date2.getDay();
+		js.day2=date2.getDay();
 		if(day2==0) day2=7;
 		d = Math.round((date.getTime() - date2.getTime()+(day2-day1)*(24*60*60*1000)) / 86400000);
 		return Math.ceil(d /7)+1;
 	}
 	
-	var monthCalc = function(add){
-		var date = new Date();
-		var month = Number(date.getMonth()) + 1 + add;
+	js.monthCalc = function(add){
+		js.date = new Date();
+		js.month = Number(date.getMonth()) + 1 + add;
 		if(month < 1){
 			month += 12;
 		}
@@ -518,43 +488,43 @@ Javascript common function
 		return month;
 	}
 	
-	var decimal = function(amount, num){
-		var amount = new Number(amount);
+	js.decimal = function(amount, num){
+		js.amount = new Number(amount);
 		return amount.toFixed(num);
 	}
 	
-	var getDateTime = function(ms){
-		var date = new Date();
+	js.getDateTime = function(ms){
+		js.date = new Date();
 		if(!!ms){
 			date.setTime(ms);
 		}
-		var Y = date.getFullYear() + '-';
-		var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-		var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
-		var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
-		var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
-		var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+		js.Y = date.getFullYear() + '-';
+		js.M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		js.D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+		js.h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+		js.m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+		js.s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
 		return Y+M+D+h+m+s;
 	}
 	
-	var urlEncode = function(data, js){
+	js.urlEncode = function(data, js){
 		 return js? window.escape(data): window.encodeURIComponent(data);
 	}
 	
-	var urlDecode = function(data, js){
+	js.urlDecode = function(data, js){
 		 return js? window.unescape(data): window.decodeURIComponent(data);
 	}
 	
-	var ceil = function(num){
+	js.ceil = function(num){
 		return !!num? Math.ceil(num): 0;
 	}
 	
-	var floor = function(num){
+	js.floor = function(num){
 		return !!num? Math.floor(num): 0;
 	}
 	
-	var watchFunc = function(obj, keys, fn){
-		var keyList = Array.isArray(keys)? keys: [keys];
+	js.watchFunc = function(obj, keys, fn){
+		js.keyList = Array.isArray(keys)? keys: [keys];
 		for(x in keyList){
 			if(typeof(obj[keyList[x]]) =="undefined"){
 				$timeout(function(){
@@ -566,7 +536,7 @@ Javascript common function
 		fn();
 	}
 	
-	var run = function(f, args){
+	js.run = function(f, args){
 		if(typeof(f) == "function"){
 			return f.apply(this, args);
 		}else if(typeof(f) == "string"){
@@ -579,48 +549,5 @@ Javascript common function
 			return f;
 		}
 	}
-	
-	
-	fn("getBasePath", getBasePath, 'getBasePath() => 獲取網址');
-	fn("getMs", getMs, 'getMs(Date d?) => 獲取毫秒');
-	fn("getWindowHeight", getWindowHeight, 'getWindowHeight() => 獲取窗口高度');
-	fn("getScrollTop", getScrollTop, 'getScrollTop() => 獲取滾動條高度');
-  	fn("getScrollHeight", getScrollHeight, 'getScrollHeight() => 獲取文檔總高度');
-	fn("isScrollBottom", isScrollBottom, 'isScrollBottom() => 滾動條是否到達底部');
-	fn("scrollReset", scrollReset, 'scrollReset() => 恢復滾動條高度');
-	fn("getRnd", getRnd, 'getRnd(int before, int end) => 獲取範圍隔機數(不包含end)');
-	fn("getRndStr", getRndStr, 'getRndStr(int len, int mode?) => 獲取隨機字串，已排除難識別英文，mode默認0(0=大寫, 1=小寫, 2=大小寫, 3=大小寫全, 4=大小寫全和=/+)');
-	fn("display", display, 'display(Elem id) => 隱藏顯示物件');
-	fn("hide", hide, 'hide(Elem id) => 隱藏物件');
-	fn("show", show, 'show(Elem id) => 顯示物件');
-	fn("fadeOut", fadeOut, 'fadeOut(Elem id, int speed?, int opacity?) => 物件淡出，speed默認值200，opacity默認值0');
-	fn("fadeIn", fadeIn, 'fadeIn(Elem id, int speed?, int opacity?) => 物件淡入，speed默認值200，opacity默認值100');
-	fn("getLen", getLen, 'getLen(Obj obj) => [] 或 {} 或 字串 > 數量');
-	fn("toArray", toArray, 'toArray(Obj obj) => [] 或 {} 或 字串 > 數組');
-	fn("isInArray", isInArray, 'isInArray(Obj obj, Obj value, Boolean checkKey?) (數組或對象，尋找值，是否檢查數組和對象的鍵) => ["aaa", "bbb"] 或 {bbb:"aaa", aaa:"bbb"} => 鍵或值是否包含值 => [aaa = true]');
-	fn("isInArrayStr", isInArrayStr, 'isInArrayStr(String str, Obj value) => aaa,bbb => 組合是否包含值 => [aaa=true]');
-	fn("getIndex", getIndex, 'getIndex(Obj obj, Obj value) => ["aaa","bbb"] 或 {name:"aaa", "name2":"bbb"} => 值在數組或對象的排序，0起步 => [bbb=1]');
-	fn("getNumList", getNumList, 'getNumList(int start, int end) => 0.1-3.8 => 獲取before至end的數值數組，向上取捨，包含before和end => [[0, 1, 2, 3, 4]]');
-	fn("regex", regex, 'regex(String data, String pattem, int lenMin?, int lenMax?) => 驗證格式，返回true符合格式');
-	fn("isEmpty", isEmpty, 'isEmpty(String value) => 驗證無效格式，返回true為無效格式 (非NULL，大於或等於0，非空字串)');
-	fn("getCookie", getCookie, 'getCookie(String n, Obj d?) (鍵，默認值) => 獲取設定Cookie的JSON對像,沒有默認值可能返回null');
-	fn("setCookie", setCookie, 'setCookie(String n, Obj v, int s?) (鍵，值，過期秒數) => 設定Cookie為JSON字串,默認1年過期,0代表關閉瀏覽器即過期 ');
-	fn("delCookie", delCookie, 'delCookie(String n) (鍵) => 刪除Cookie');
-	fn("getParam", getParam, 'getParam(String n, Obj d?) (鍵，默認值) => 獲取url參數');
-	fn("getParams", getParams, 'getParams() () => 獲取url params對象');
-	fn("getParamUrl", getParamUrl, 'getParamUrl(Obj obj, Boolean addParams) => 獲取url params帶?');
-	fn("cloneObj", cloneObj, 'cloneObj(Obj obj) => 克隆對像');
-	fn("merge", merge, 'merge(Obj target, Obj source) => 合拼對像');
-	fn("getVar", getVar, 'getVar(String name) => 獲取變量');
-	fn("getWeek", getWeek, 'getWeek(date) => 獲取本年第幾周');
-	fn("monthCalc", monthCalc, 'monthCalc(add) => 獲取月份的計算');
-	fn("decimal", decimal, 'decimal(amount, num) => 保留小數點後');
-	fn("getDateTime", getDateTime, 'getDateTime(Long ms?) => 獲取yyyy-MM-dd HH:mm:ss');
-	fn("urlEncode", urlEncode, 'urlEncode(String data, Boolean js?) => 轉碼');
-	fn("urlDecode", urlDecode, 'urlDecode(String data, Boolean js?) => 解碼');
-	fn("ceil", ceil, 'ceil(int num) => 向上取整');
-	fn("floor", floor, 'floor(int num) => 向下取整');
-	fn("watchFunc", watchFunc, 'watchFunc(Object obj, String key, Function fnuc) (来源对象，来源键，函数) => 监听至有值执行');
-	fn("run", run, 'run(Function f, Object args) (方法, 參數) => 執行方法');
-	
+
 }) (window, "js");	
