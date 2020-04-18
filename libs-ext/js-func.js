@@ -462,7 +462,7 @@ Javascript common function
 	    return target;
 	}
 	
-	js.getjs.= function(name){
+	js.getVar = function(name){
 		return eval(name);
 	}
 	
