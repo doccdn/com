@@ -6,16 +6,21 @@ Javascript common function
 */
 
 (function(w, n) {
-	w[n] = js = {};
+	w[n] = js = function(){
+		console.log("Js-common version1.0 is ready.");
+	}
 	
 	if(typeof Object.assign != 'function'){
 		Object.assign = function(target) {
 			'use strict';
+			/*if(target != null){
+				throw new TypeError('Cannot convert undefined or null to object');
+			}*/
 			target = Object(target);
-			for(js.index = 1; index < arguments.length; index++){
-				js.source = arguments[index];
+			for(var index = 1; index < arguments.length; index++){
+				var source = arguments[index];
 				if(source != null){
-					for(js.key in source){
+					for(var key in source){
 			          if(Object.prototype.hasOwnProperty.call(source, key)){
 			          	target[key] = source[key];
 			          }
@@ -28,20 +33,30 @@ Javascript common function
 	
 	if(!Object.keys){
 	  Object.keys = (function () {
-		js.hasOwnProperty = Object.prototype.hasOwnProperty,
+		var hasOwnProperty = Object.prototype.hasOwnProperty,
 			hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
-			dontEnums = ['toString', 'toLocaleString', 'valueOf', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'constructor'],
+			dontEnums = [
+			  'toString',
+			  'toLocaleString',
+			  'valueOf',
+			  'hasOwnProperty',
+			  'isPrototypeOf',
+			  'propertyIsEnumerable',
+			  'constructor'
+			],
 			dontEnumsLength = dontEnums.length;
 	
 		return function (obj) {
 		  if (typeof obj !== 'object' && typeof obj !== 'function' || obj === null) throw new TypeError('Object.keys called on non-object');
 	
-		  js.result = [];
-		  for (js.prop in obj) {
+		  var result = [];
+	
+		  for (var prop in obj) {
 			if (hasOwnProperty.call(obj, prop)) result.push(prop);
 		  }
+	
 		  if (hasDontEnumBug) {
-			for (js.i=0; i < dontEnumsLength; i++) {
+			for (var i=0; i < dontEnumsLength; i++) {
 			  if (hasOwnProperty.call(obj, dontEnums[i])) result.push(dontEnums[i]);
 			}
 		  }
@@ -51,7 +66,7 @@ Javascript common function
 	};
 	
 	String.prototype.hashCode = function() {
-		js.hash = 0, i, chr;
+		var hash = 0, i, chr;
 		if (this.length === 0) return hash;
 		for (i = 0; i < this.length; i++) {
 			chr   = this.charCodeAt(i);
@@ -61,27 +76,43 @@ Javascript common function
 		return hash;
 	};
 	
-	js.j = {};
+	var j = {};
+	var h = {};
 	
 	js.log =  function(m, o){
 		o = (typeof(o) == "undefined"? "": (Array.isArray(o)? o: [o]));
 		console.log(m, o);
 	}
+	
+	js.help = function(){
+		js.log("Help:");
+		var keys = Object.keys(h);
+		for(var i = 0 ; i < keys.length ; i++){
+			js.log(n +"." + h[keys[i]]);
+		}
+		js.log(n +".browser", js.browser);
+	}
+	
+	var fn = function(n, f, r){
+		js[n] = f;
+		h[n] = r;
+		return js;
+	}
 		
 	js.browser = function(){
-		js.agent = navigator.userAgent;
-		js.app = navigator.appVersion;  
-		return {
-			trident: agent.indexOf('Trident') > -1 //IE Core
-			, presto: agent.indexOf('Presto') > -1 //Opera Core 
-			, webKit: agent.indexOf('AppleWebKit') > -1 //Apple Core
-			, gecko: agent.indexOf('Gecko') > -1 && agent.indexOf('KHTML') == -1 //Firefox Core
-			, mobile: !!agent.match(/AppleWebKit.*Mobile.*/) //Moblie
-			, ios: !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //IOS
-			, android: agent.indexOf('Android') > -1 || agent.indexOf('Linux') > -1 //Android or UC
-			, iPhone: agent.indexOf('iPhone') > -1 //iPhone or QQ HD Browser
-			, iPad: agent.indexOf('iPad') > -1 //iPad  
-			, webApp: agent.indexOf('Safari') > -1 //Safari
+		var agent = navigator.userAgent;
+		var app = navigator.appVersion;  
+		return {   //移动终端浏览器版本信息  
+			trident: agent.indexOf('Trident') > -1 //IE内核  
+			, presto: agent.indexOf('Presto') > -1 //opera内核  
+			, webKit: agent.indexOf('AppleWebKit') > -1 //苹果、谷歌内核  
+			, gecko: agent.indexOf('Gecko') > -1 && agent.indexOf('KHTML') == -1 //火狐内核  
+			, mobile: !!agent.match(/AppleWebKit.*Mobile.*/) //是否为移动终端  
+			, ios: !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端  
+			, android: agent.indexOf('Android') > -1 || agent.indexOf('Linux') > -1 //android终端或uc浏览器  
+			, iPhone: agent.indexOf('iPhone') > -1 //是否为iPhone或者QQHD浏览器  
+			, iPad: agent.indexOf('iPad') > -1 //是否iPad  
+			, webApp: agent.indexOf('Safari') > -1 //是否web应该程序，没有头部与底部
 			, language: (navigator.browserLanguage || navigator.language).toLowerCase()  
 			, weixin: agent.indexOf('MicroMessenger') > -1 || typeof(navigator.wxuserAgent) !== "undefined" || typeof(WeixinJSBridge) !== "undefined"
 			, weibo: agent.indexOf('WeiBo') > -1
@@ -107,7 +138,7 @@ Javascript common function
 	}
 	
 	js.getScrollTop = function(){
-		js.scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
+		var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
 		if(!!document.body){
 			bodyScrollTop = document.body.scrollTop;
 		}
@@ -118,7 +149,7 @@ Javascript common function
 	}
 	
 	js.getScrollHeight = function(){
-		js.scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
+		var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
 		if(!!document.body){
 			bodyScrollHeight = document.body.scrollHeight;
 		}
@@ -129,7 +160,7 @@ Javascript common function
 	}
 	
 	js.isScrollBottom = function(){
-		if(getScrollTop() + getWindowHeight() + 60 >= getScrollHeight()){
+		if(js.getScrollTop() + js.getWindowHeight() + 60 >= js.getScrollHeight()){
 			return true;
 		}else{
 			return false;
@@ -138,13 +169,13 @@ Javascript common function
 	
 	js.scrollReset = function(){
 		j.resetScroll = setInterval(function(){
-			js.osTop = 0;
+			var osTop = 0;
 			if(!!document.documentElement && !!document.documentElement.scrollTop){
 				osTop = document.documentElement.scrollTop;
 			}else if(!!document.body){
 				osTop = document.body.scrollTop;
 			}
-			js.speed = Math.floor(-osTop / 6);
+			var speed = Math.floor(-osTop / 6);
 			document.documentElement.scrollTop = document.body.scrollTop = osTop + speed;
 			if(osTop == 0){
 				clearInterval(j.resetScroll);
@@ -156,16 +187,16 @@ Javascript common function
 		return before + Math.floor(Math.random() * (end - before));   
 	}
 	
-	js.getRndStr = function(len, mode){ //0=upperCase, 1=lowerCase, 3=both, 4=allWords, 5=allWordsAndSymbol
-		js.upperCase = ['3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','J','K','M','N','P','Q','R','S','W','X','Y'];
-		js.lowerCase =  ['3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','j','k','m','n','p','q','r','s','w','x','y'];
-		js.alls = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-		js.des = ['+', '=', '/','+', '=', '/','+', '=', '/'];
-		js.plan = [upperCase, lowerCase, upperCase.concat(lowerCase), alls, alls.concat(des)];
-		js.chars = plan[mode || 0];
-		js.res = "";
-		 for(js.i = 0; i < len ; i ++) {
-			 js.rnd = Math.ceil(Math.random()*(chars.length - 1));
+	js.getRndStr = function(len, mode){ //长度, 大写
+		var upperCase = ['3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','J','K','M','N','P','Q','R','S','W','X','Y'];
+		var lowerCase =  ['3','4','5','6','7','8','9','a','b','c','d','e','f','g','h','j','k','m','n','p','q','r','s','w','x','y'];
+		var alls = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+		var des = ['+', '=', '/','+', '=', '/','+', '=', '/'];
+		var plan = [upperCase, lowerCase, upperCase.concat(lowerCase), alls, alls.concat(des)];
+		var chars = plan[mode || 0];
+		var res = "";
+		 for(var i = 0; i < len ; i ++) {
+			 var rnd = Math.ceil(Math.random()*(chars.length - 1));
 			 res += chars[rnd];
 		 }
 		 return res;
@@ -190,10 +221,10 @@ Javascript common function
 	}
 	
 	js.fadeOut = function(elemId, speed, opacity) {
-		js.elem = document.getElementById(elemId);
+		var elem = document.getElementById(elemId);
 		if(elem){
 			j.hide = j.hide || {};
-			js.v = elem.style.filter.replace("alpha(opacity=", "").replace(")", "") || elem.style.opacity || 100;
+			var v = elem.style.filter.replace("alpha(opacity=", "").replace(")", "") || elem.style.opacity || 100;
 			v < 1 && (v = v * 100);
 			if(v > (opacity || 0) && (!j.hide[elemId] || j.hide[elemId] == false)){
 				j.hide[elemId] = setInterval(function(){
@@ -211,10 +242,10 @@ Javascript common function
 	}
 	
 	js.fadeIn = function(elemId, speed, opacity) {
-		js.elem = document.getElementById(elemId);
+		var elem = document.getElementById(elemId);
 		if(elem){
 			j.hide = j.hide || {};
-			js.v = elem.style.filter.replace("alpha(opacity=", "").replace(")", "") || elem.style.opacity || 100;
+			var v = elem.style.filter.replace("alpha(opacity=", "").replace(")", "") || elem.style.opacity || 100;
 			v < 1 && (v = v * 100);
 			if(v < (opacity || 100) && (!j.hide[elemId] || j.hide[elemId] == false)){
 				j.hide[elemId] = setInterval(function(){
@@ -249,9 +280,9 @@ Javascript common function
 			return obj;
 		}
 		 if(typeof(obj) == "object"){
-			js.keys = Object.keys(obj);
-			js.a = [];
-			for(js.i = 0; i < keys.length; i++){
+			var keys = Object.keys(obj);
+			var a = [];
+			for(var i = 0; i < keys.length; i++){
 				a.push(obj[keys[i]])
 			}
 			return a;
@@ -265,7 +296,7 @@ Javascript common function
 			return false;
 		}
 		if(Array.isArray(obj)){
-			for(js.i = 0; i < obj.length; i++){
+			for(var i = 0; i < obj.length; i++){
 				if(obj[i] == value){
 					return true;
 				}
@@ -274,8 +305,8 @@ Javascript common function
 				}
 			}
 		}else if(typeof(obj) == "object"){
-			js.keys = Object.keys(obj);
-			for(js.i = 0; i < keys.length; i++){
+			var keys = Object.keys(obj);
+			for(var i = 0; i < keys.length; i++){
 				if(obj[keys[i]] == value){
 					return true;
 				}
@@ -289,8 +320,8 @@ Javascript common function
 	
 	js.isInArrayStr = function(str, value){
 		if(!!str){
-			js.array = str.split(",");
-			for(js.i = 0; i < array.length; i++){
+			var array = str.split(",");
+			for(var i = 0; i < array.length; i++){
 				if(array[i] == value){
 					return true;
 				}
@@ -301,14 +332,14 @@ Javascript common function
 	
 	js.getIndex = function(obj, value){
 		if(Array.isArray(obj)){
-			for(js.i = 0; i < obj.length; i++){
+			for(var i = 0; i < obj.length; i++){
 				if(obj[i] == value){
 					return i;
 				}
 			}
 		}else if(typeof(obj) == "object"){
-			js.keys = Object.keys(obj);
-			for(js.i = 0; i < keys.length; i++){
+			var keys = Object.keys(obj);
+			for(var i = 0; i < keys.length; i++){
 				if(obj[keys[i]] == value){
 					return i;
 				}
@@ -320,8 +351,8 @@ Javascript common function
 	js.getNumList = function(before, end){
 		before = Math.ceil(before);
 		end = Math.ceil(end);
-		js.nums = [];
-		for(js.i = before; i <= end;i++){
+		var nums = [];
+		for(var i = before; i <= end;i++){
 			nums[i] = i;
 		}
 		return nums;
@@ -331,21 +362,21 @@ Javascript common function
 		if((!!min && data.length < min) || (!!max && data.length > max)){
 			return false;
 		}
-		js.re = new RegExp(pattem);
+		var re = new RegExp(pattem);
 		return re.test(data);
 	}
 	
-	js.empty = function(value){ 
+	js.isEmpty = function(value){ 
 		return value && value != null && value >= 0 && value != "";	
 	}
 	
 	js.getCookie = function(n, d, c){
-		js.arr,reg=new RegExp("(^| )"+n+"=([^;]*)(;|$)");
+		var arr,reg=new RegExp("(^| )"+n+"=([^;]*)(;|$)");
 		if(arr=document.cookie.match(reg)){
-			js.r = unescape(arr[2]);
-			js.e;
+			var r = unescape(arr[2]);
+			var e;
 			try{
-				js.j = JSON.parse(r);
+				var j = JSON.parse(r);
 				if(typeof j == 'object' && j){
 					return j;
 				}else{
@@ -363,7 +394,7 @@ Javascript common function
 	}
 	
 	js.setCookie = function(n, v, s){
-		js.expireDate = new Date();
+		var expireDate = new Date();
 		v = typeof v == 'object'? JSON.stringify(v): v;
 		if(s == 0){
 			document.cookie=n + "=" +escape(v) + ";path=/";
@@ -375,23 +406,23 @@ Javascript common function
 	}
 	
 	js.delCookie = function(n){
-		js.expireDate = new Date();
+		var expireDate = new Date();
 		expireDate.setDate(expireDate.getDate() - 1);
-		js.cval = this.getCookie(n, null);
+		var cval = this.getCookie(n, null);
 		if(cval !=null){
 			document.cookie= n + "="+cval+";expires="+expireDate.toGMTString();
 		}
 	}
 	
 	js.getParams = function(){
-		js.url = window.location.toString();
-		js.start = url.indexOf("?");
-		js.params = {};
+		var url = window.location.toString();
+		var start = url.indexOf("?");
+		var params = {};
 		url = url.substring(start);
 		if (url.indexOf("?") != -1) { 
-			js.str = url.substr(1); 
+			var str = url.substr(1); 
 			strs = str.split("&"); 
-			for(js.i = 0; i < strs.length; i ++) {
+			for(var i = 0; i < strs.length; i ++) {
 				params[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
 			} 
 		} 
@@ -399,21 +430,21 @@ Javascript common function
 	}
 	
 	js.getParam = function(n, d){
-		js.params = getParams();
+		var params = getParams();
 		return params[n] || d; 
 	}
 	
 	js.getParamUrl = function(url, srcObj, addParams){
-		js.obj = cloneObj(srcObj);
+		var obj = js.cloneObj(srcObj);
 		if(obj && addParams){
 			obj = Object.assign(getParams(), obj);
 		}
 		if(!obj || typeof(obj) != "object" || Array.isArray(obj)){
 			return url || "";
 		}
-		js.param = [];
-		js.objKeys = Object.keys(obj);
-		for(js.i = 0; i < objKeys.length; i++){
+		var param = [];
+		var objKeys = Object.keys(obj);
+		for(var i = 0; i < objKeys.length; i++){
 			if(obj[objKeys[i]] != "undefined" &&  typeof obj[objKeys[i]] != "null" && obj[objKeys[i]] != null){
 				param[i] = objKeys[i] + "=" + encodeURIComponent(obj[objKeys[i]]);
 			}
@@ -427,16 +458,16 @@ Javascript common function
 			return obj;
 		}
 		if(Array.isArray(obj) && Object.keys(obj).length > 0){
-			js.o = [];
-			for (js.i = 0; i < obj.length; i++) {
-				o.push(cloneObj(obj[i]));
+			var o = [];
+			for (var i = 0; i < obj.length; i++) {
+				o.push(js.cloneObj(obj[i]));
 			}
 			return o;
 		}
 		if(typeof obj == "object" && Object.keys(obj).length > 0){
-			js.o = {};
-			for (js.j in obj) {
-				o[j] = cloneObj(obj[j]);
+			var o = {};
+			for (var j in obj) {
+				o[j] = js.cloneObj(obj[j]);
 			}
 			return o;
 		}
@@ -467,18 +498,18 @@ Javascript common function
 	}
 	
 	js.getWeek = function(date){
-		js.date2=new Date(date.getFullYear(), 0, 1);
-		js.day1=date.getDay();
+		var date2=new Date(date.getFullYear(), 0, 1);
+		var day1=date.getDay();
 		if(day1==0) day1=7;
-		js.day2=date2.getDay();
+		var day2=date2.getDay();
 		if(day2==0) day2=7;
 		d = Math.round((date.getTime() - date2.getTime()+(day2-day1)*(24*60*60*1000)) / 86400000);
 		return Math.ceil(d /7)+1;
 	}
 	
 	js.monthCalc = function(add){
-		js.date = new Date();
-		js.month = Number(date.getMonth()) + 1 + add;
+		var date = new Date();
+		var month = Number(date.getMonth()) + 1 + add;
 		if(month < 1){
 			month += 12;
 		}
@@ -489,21 +520,21 @@ Javascript common function
 	}
 	
 	js.decimal = function(amount, num){
-		js.amount = new Number(amount);
+		var amount = new Number(amount);
 		return amount.toFixed(num);
 	}
 	
 	js.getDateTime = function(ms){
-		js.date = new Date();
+		var date = new Date();
 		if(!!ms){
 			date.setTime(ms);
 		}
-		js.Y = date.getFullYear() + '-';
-		js.M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-		js.D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
-		js.h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
-		js.m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
-		js.s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+		var Y = date.getFullYear() + '-';
+		var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+		var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+		var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+		var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
 		return Y+M+D+h+m+s;
 	}
 	
@@ -524,7 +555,7 @@ Javascript common function
 	}
 	
 	js.watchFunc = function(obj, keys, fn){
-		js.keyList = Array.isArray(keys)? keys: [keys];
+		var keyList = Array.isArray(keys)? keys: [keys];
 		for(x in keyList){
 			if(typeof(obj[keyList[x]]) =="undefined"){
 				$timeout(function(){
@@ -549,5 +580,6 @@ Javascript common function
 			return f;
 		}
 	}
-
+	
+	
 }) (window, "js");	
